@@ -164,6 +164,20 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public ResponseObject save(CategoryViewModel model) {
+        // Validate name
+        if (model.getName() == null || model.getName().isEmpty()) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Category name is required", null);
+        }
+        if (model.getName().length() < 3 || model.getName().length() > 100) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Category name must be between 3 and 100 characters", null);
+        }
+        if (!model.getName().matches("^[a-zA-Z0-9 ]+$")) { // Không cho phép ký tự đặc biệt
+            return new ResponseObject(Constant.FAILED_STATUS, "Category name can only contain letters, numbers, and spaces", null);
+        }
+        // validate status
+        if (!(model.isStatus() == true || model.isStatus() == false)) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Status must be true or false", null);
+        }
         try {
             logger.info("Starting category creation with name: {}", model.getName());
             Category category = new Category();
@@ -193,6 +207,20 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public ResponseObject update(Integer categoryId, CategoryViewModel model) {
+        // Validate name
+        if (model.getName() == null || model.getName().isEmpty()) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Category name is required", null);
+        }
+        if (model.getName().length() < 3 || model.getName().length() > 100) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Category name must be between 3 and 100 characters", null);
+        }
+        if (!model.getName().matches("^[a-zA-Z0-9 ]+$")) { // Không cho phép ký tự đặc biệt
+            return new ResponseObject(Constant.FAILED_STATUS, "Category name can only contain letters, numbers, and spaces", null);
+        }
+        // validate status
+        if (!(model.isStatus() == true || model.isStatus() == false)) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Status must be true or false", null);
+        }
         try {
             logger.info("Starting category update for ID: {}", categoryId);
             // Tìm kiếm Category từ categoryId

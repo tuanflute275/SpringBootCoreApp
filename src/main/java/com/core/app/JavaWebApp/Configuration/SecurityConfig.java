@@ -18,13 +18,23 @@ public class SecurityConfig {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    private static final String[] PUBLIC_URLS = {
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/webjars/**",
+            "/api/category",
+            "/api/auth/login",
+            "/api/auth/register",
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.cors();
         http
                 .csrf().disable()  // Tắt CSRF nếu không sử dụng (thường dùng cho RESTful APIs)
                 .authorizeRequests()
-                .requestMatchers("/api/auth/login", "/api/auth/register", "/api/category", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()  // Các endpoint không yêu cầu xác thực
+                .requestMatchers(PUBLIC_URLS).permitAll()  // Các endpoint không yêu cầu xác thực
                 .anyRequest().authenticated()  // Các yêu cầu khác yêu cầu xác thực
                 .and()
                 .formLogin()

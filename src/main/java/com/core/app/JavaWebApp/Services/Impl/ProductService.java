@@ -177,6 +177,30 @@ public class ProductService implements IProductService {
 
     @Override
     public ResponseObject save(ProductViewModel model) {
+        // Validate name
+        if (model.getName() == null || model.getName().isEmpty()) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Product name is required", null);
+        }
+        if (model.getName().length() < 3 || model.getName().length() > 100) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Product name must be between 3 and 100 characters", null);
+        }
+        if (!model.getName().matches("^[a-zA-Z0-9 ]+$")) { // Không cho phép ký tự đặc biệt
+            return new ResponseObject(Constant.FAILED_STATUS, "Product name can only contain letters, numbers, and spaces", null);
+        }
+        // Validate price
+        if (model.getPrice() == null || model.getPrice() <= 0) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Price must be a positive value", null);
+        }
+
+        // Validate status
+        if (!(model.isStatus() == true || model.isStatus() == false)) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Status must be true or false", null);
+        }
+
+        // Validate categoryId (Có thể kiểm tra tồn tại trong cơ sở dữ liệu nếu cần)
+        if (model.getCategoryId() == null || model.getCategoryId() <= 0) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Invalid category ID", null);
+        }
         try {
             logger.info("Starting to save product with name: {}", model.getName());
             Product product = new Product();
@@ -210,6 +234,30 @@ public class ProductService implements IProductService {
 
     @Override
     public ResponseObject update(Integer productId, ProductViewModel model) {
+        // Validate name
+        if (model.getName() == null || model.getName().isEmpty()) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Product name is required", null);
+        }
+        if (model.getName().length() < 3 || model.getName().length() > 100) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Product name must be between 3 and 100 characters", null);
+        }
+        if (!model.getName().matches("^[a-zA-Z0-9 ]+$")) { // Không cho phép ký tự đặc biệt
+            return new ResponseObject(Constant.FAILED_STATUS, "Product name can only contain letters, numbers, and spaces", null);
+        }
+        // Validate price
+        if (model.getPrice() == null || model.getPrice() <= 0) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Price must be a positive value", null);
+        }
+
+        // Validate status
+        if (!(model.isStatus() == true || model.isStatus() == false)) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Status must be true or false", null);
+        }
+
+        // Validate categoryId (Có thể kiểm tra tồn tại trong cơ sở dữ liệu nếu cần)
+        if (model.getCategoryId() == null || model.getCategoryId() <= 0) {
+            return new ResponseObject(Constant.FAILED_STATUS, "Invalid category ID", null);
+        }
         try {
             logger.info("Starting to update product with ID: {}", productId);
             // Tìm kiếm Category từ categoryId
