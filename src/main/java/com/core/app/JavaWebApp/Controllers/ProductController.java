@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Product Controller", description = "API for managing products")
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping("${spring.api.prefix}/product")
 public class ProductController {
     @Autowired
     IProductService productService;

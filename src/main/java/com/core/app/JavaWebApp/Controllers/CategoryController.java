@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Category Controller", description = "API for managing categories")
 @RestController
-@RequestMapping(path = "/api/category")
+@RequestMapping("${spring.api.prefix}/category")
 public class CategoryController {
 
     @Autowired

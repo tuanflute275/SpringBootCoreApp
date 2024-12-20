@@ -1,6 +1,8 @@
 package com.core.app.JavaWebApp.Configuration;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +20,9 @@ public class SecurityConfig {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+    @Value("${spring.api.prefix}")
+    private String apiPrefix;
+
     private static final String[] PUBLIC_URLS = {
             "/swagger-ui/**",
             "/v3/api-docs/**",
@@ -26,7 +31,10 @@ public class SecurityConfig {
             "/api/category",
             "/api/auth/login",
             "/api/auth/register",
+            "/api/actuator",
+            "/api/actuator/health"
     };
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -38,7 +46,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()  // Các yêu cầu khác yêu cầu xác thực
                 .and()
                 .formLogin()
-                .loginPage("/login")  // Chỉ định trang đăng nhập tùy chỉnh
+                .loginPage("/api/v1/auth/login")  // Chỉ định trang đăng nhập tùy chỉnh
                 .permitAll()  // Cho phép mọi người truy cập trang đăng nhập mà không cần xác thực
                 .and()
                 .exceptionHandling()
